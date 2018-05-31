@@ -16,7 +16,7 @@ class Books {
      * @param {XMLHttpRequest} request
      */
     handle_state_change(request) {
-        if (request.readyState == 4 && request.status == 200) {
+        if (request.readyState === 4 && request.status === 200) {
             this.handle_response_text(request.responseText)
         }
     }

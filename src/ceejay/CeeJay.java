@@ -1,14 +1,11 @@
 package ceejay;
 
-import org.eclipse.jetty.http.MimeTypes;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 
-public class CeeJay {
-    Server server;
-
+class CeeJay {
     public static void main(String[] args) throws Exception {
         new CeeJay().run();
     }
@@ -18,7 +15,7 @@ public class CeeJay {
     }
 
     private void createServer() throws Exception {
-        server = new Server(8080);
+        Server server = new Server(8080);
         server.setHandler(createHandlerCollection());
         server.start();
         server.join();
