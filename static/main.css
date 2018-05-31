@@ -5,3 +5,13 @@
 h1 {
     color: darkred;
 }
+
+.list_entry {
+    background: #ffd;
+    padding: 10px 5px;
+    margin: 0;
+    border: black solid 1px;
+    border-collapse: collapse;
+    width: 200px;
+    min-height: 20px;
+}
