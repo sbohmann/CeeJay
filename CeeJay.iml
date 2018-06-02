@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.eclipse.jetty:jetty-server:9.4.10.v201805031" level="project" />
+    <orderEntry type="library" name="org.eclipse.jetty:jetty-servlet:9.4.10.v20180503" level="project" />
   </component>
 </module>
