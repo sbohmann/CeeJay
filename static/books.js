@@ -1,13 +1,14 @@
 class Books {
     initList() {
-        this.div = document.getElementById('book_list')
+        this.bookList = new ListView()
+        document.body.appendChild(this.bookList.getMainElement())
         this.fetchBookList()
     }
 
     fetchBookList() {
         let request = new XMLHttpRequest()
         request.onreadystatechange = () => this.handleStateChange(request)
-        request.open('GET', '/api/book_list')
+        request.open('GET', '/books')
         request.send()
     }
 
@@ -21,25 +22,41 @@ class Books {
     }
 
     handleResponseText(responseText) {
-        let lines = responseText
-            .split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0)
-        for (let line of lines) {
-            this.div.appendChild(this.createBookEntry())
+        this.books = JSON.parse(responseText)
+        this.createBookList()
+    }
+
+    createBookList() {
+        for (let book of this.books) {
+            this.createBookEntry(book)
         }
     }
 
-    createBookEntry(line) {
-        let result = document.createElement('div');
-        result.classList.add('list_entry')
-        result.appendChild(this.createBookLink(line))
+    createBookEntry(book) {
+        let bookDiv = document.createElement('div')
+        bookDiv.classList.add('list_entry')
+        bookDiv.appendChild(this.createBookLink(book))
+        bookDiv.appendChild(document.createElement('br'))
+        bookDiv.appendChild(document.createTextNode(book.author.displayName))
+        bookDiv.appendChild(document.createElement('br'))
+        bookDiv.appendChild(document.createTextNode(book.year))
+        for (let image of book.images) {
+            bookDiv.appendChild(document.createElement('br'))
+            bookDiv.appendChild(this.createBookImage(image))
+        }
+        this.bookList.addElement(bookDiv)
+    }
+
+    createBookLink(book) {
+        let result = document.createElement('a')
+        result.setAttribute('href', '/book/' + book.id)
+        result.appendChild(document.createTextNode(book.name))
         return result
     }
 
-    createBookLink(line) {
-        let result = document.createElement('a')
-        result.setAttribute('href', '/book.html?id=' + line)
+    createBookImage(image) {
+        let result = document.createElement('img')
+        result.setAttribute('src', image.path)
         return result
     }
 }

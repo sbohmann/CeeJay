@@ -11,5 +11,6 @@
     <orderEntry type="library" name="org.eclipse.jetty:jetty-servlet:9.4.10.v20180503" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-core:2.9.5" level="project" />
     <orderEntry type="library" name="com.google.guava:guava:25.1-jre" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.9.5" level="project" />
   </component>
 </module>

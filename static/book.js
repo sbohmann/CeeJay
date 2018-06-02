@@ -8,7 +8,7 @@ class Book {
     fetchBookDetails() {
         let request = new XMLHttpRequest()
         request.onreadystatechange = () => this.handleStateChange(request)
-        request.open('GET', '/api/book_details')
+        request.open('GET', '/book/id') // TODO add actual ID from path or wherever
         request.send()
     }
 
@@ -23,7 +23,7 @@ class Book {
 
     handleResponseText(responseText) {
         this.book = JSON.parse(responseText)
-        createBookUi()
+        this.createBookUi()
     }
 
     createBookUi() {
@@ -44,7 +44,7 @@ class Book {
 
     createAuthorLink() {
         result = document.createElement('a')
-        result.setAttribute('href', '/author.html?id=' + this.book.author.id)
+        result.setAttribute('href', '/authors/' + this.book.author.id)
         result.appendChild(document.createTextNode(this.book.author.displayName))
         return result
     }

@@ -52,6 +52,6 @@ class CeeJay {
     }
 
     private void addBookServlet(ServletContextHandler handler) {
-        handler.addServlet(new ServletHolder(new BookServlet()), "/books/*");
+        handler.addServlet(new ServletHolder(new BookServlet()), "/book/*");
     }
 }
