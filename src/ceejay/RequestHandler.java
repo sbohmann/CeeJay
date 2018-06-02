@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 class RequestHandler extends AbstractHandler {
     private static final Pattern apiPath = Pattern.compile("/api(?:/(.*))?");
+    private static final Pattern bookPath = Pattern.compile("book/(\\d+)");
 
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -33,17 +34,27 @@ class RequestHandler extends AbstractHandler {
 
     private boolean handleSpecificPath(String path, HttpServletResponse response) throws IOException {
         boolean handled = true;
-        switch (path) {
-            case "book_list":
-                writeBookList(response);
-                break;
-            default:
-                handled = false;
+
+        if (path.equals("book_list")) {
+            writeBookList(response);
+        } else if (path.startsWith("book/")) {
+            writeBook(response);
+        } else {
+            handled = false;
         }
         return handled;
     }
 
     private void writeBookList(HttpServletResponse response) throws IOException {
+        response.setContentType("text/plain; charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        PrintWriter out = response.getWriter();
+        out.println("Book 1");
+        out.println("Book 2");
+        out.println("Book 3");
+    }
+
+    private void writeBook(HttpServletResponse response) throws IOException {
         response.setContentType("text/plain; charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();

@@ -1,7 +1,6 @@
 class Books {
     initList() {
         this.div = document.getElementById('book_list')
-        this.div.appendChild(document.createTextNode('TODO request book list from api'))
         this.fetchBookList()
     }
 
@@ -31,10 +30,17 @@ class Books {
         }
     }
 
-    createBookEntry() {
+    createBookEntry(line) {
         let result = document.createElement('div');
         result.classList.add('list_entry')
-        return result;
+        result.appendChild(this.createBookLink(line))
+        return result
+    }
+
+    createBookLink(line) {
+        let result = document.createElement('a')
+        result.setAttribute('href', '/book.html?id=' + line)
+        return result
     }
 }
 
