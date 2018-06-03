@@ -9,8 +9,7 @@ class ListView {
 
     _createMainElement() {
         let div = document.createElement('div')
-        div.style.borderWidth = '1px'
-        div.style.borderColor = 'black'
+        div.style.border = '1px black solid'
         div.style.padding = '0 5px'
         div.style.margin = '5px'
         div.style.background = '#cdf'

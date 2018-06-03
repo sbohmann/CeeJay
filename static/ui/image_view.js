@@ -6,7 +6,6 @@ class ImageView {
     }
 
     setWidth(width) {
-        console.log(this)
         this.mainElement.style.width = width
         this._imageElement.style.maxWidth = width
     }
