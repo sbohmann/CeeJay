@@ -1,18 +1,13 @@
-
 class ListView {
     constructor() {
-        this.mainDiv = this._createMainDiv()
-    }
-
-    getMainElement() {
-        return this.mainDiv
+        this.mainElement = this._createMainElement()
     }
 
     addElement(element) {
-        this.mainDiv.appendChild(this._createContainerDiv(element))
+        this.mainElement.appendChild(this._createContainerDiv(element))
     }
 
-    _createMainDiv() {
+    _createMainElement() {
         let div = document.createElement('div')
         div.style.borderWidth = '1px'
         div.style.borderColor = 'black'
@@ -25,6 +20,7 @@ class ListView {
     _createContainerDiv(element) {
         let div = document.createElement('div')
         div.style.margin = '5px 0'
+        div.style.padding = '0'
         div.appendChild(element)
         return div
     }

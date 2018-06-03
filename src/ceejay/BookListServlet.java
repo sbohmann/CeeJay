@@ -17,7 +17,7 @@ class BookListServlet extends HttpServlet {
 
     static {
         bookList = new ArrayList<>();
-        bookList.add(new Book(1, "Different Fruit", new Author(1, "Chia Charleston"), 2000, images("apple", "pear")));
+        bookList.add(new Book(1, "Differing Fruit", new Author(1, "Chia Charleston"), 2000, images("apple", "pear")));
         bookList.add(new Book(2, "Tropical", new Author(2, "Breanne Somma"), 2003, images("coconut")));
         bookList.add(new Book(3, "The Beast", new Author(3, "Leda Sautner"), 2005, images("cow")));
         bookList.add(new Book(4, "Sizzling", new Author(4, "Exie Ahart"), 2007, images("sun")));

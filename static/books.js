@@ -1,7 +1,7 @@
 class Books {
     initList() {
         this.bookList = new ListView()
-        document.body.appendChild(this.bookList.getMainElement())
+        document.body.appendChild(this.bookList.mainElement)
         this.fetchBookList()
     }
 
@@ -42,7 +42,7 @@ class Books {
         bookDiv.appendChild(document.createTextNode(book.year))
         for (let image of book.images) {
             bookDiv.appendChild(document.createElement('br'))
-            bookDiv.appendChild(this.createBookImage(image))
+            bookDiv.appendChild(this.createBookImage(image).mainElement)
         }
         this.bookList.addElement(bookDiv)
     }
@@ -55,8 +55,9 @@ class Books {
     }
 
     createBookImage(image) {
-        let result = document.createElement('img')
-        result.setAttribute('src', image.path)
+        let result = new ImageView(image.path)
+        result.setWidth(600)
+        result.setHeight(600)
         return result
     }
 }
