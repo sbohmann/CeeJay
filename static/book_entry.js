@@ -7,7 +7,7 @@ class BookEntry {
     }
 
     fillContent() {
-        this.appendParagraph(this.bookLink())
+        this.appendParagraph(this.header(this.bookLink()))
         this.appendParagraph(this.textNode(this.book.author.displayName))
         this.appendParagraph(this.textNode(this.book.year))
         for (let image of this.book.images) {
@@ -25,6 +25,12 @@ class BookEntry {
         this.bookDiv.appendChild(p)
     }
 
+    header(content) {
+        let result = document.createElement('h2')
+        result.appendChild(content)
+        return result
+    }
+
     bookLink() {
         let result = document.createElement('a')
         result.setAttribute('href', '/book/' + this.book.id)
@@ -34,8 +40,8 @@ class BookEntry {
 
     createBookImage(image) {
         let result = new ImageView(image.path)
-        result.setWidth(600)
-        result.setHeight(600)
+        result.setWidth(480)
+        result.setHeight(480)
         return result
     }
 }

@@ -1,8 +1,16 @@
 class Books {
+    init() {
+        this.initList()
+    }
+
     initList() {
         this.bookList = new ListView()
-        document.body.appendChild(this.bookList.mainElement)
+        this.contentDiv().appendChild(this.bookList.mainElement)
         this.fetchBookList()
+    }
+
+    contentDiv() {
+        return document.getElementById('content')
     }
 
     fetchBookList() {
@@ -34,4 +42,4 @@ class Books {
     }
 }
 
-window.onload = () => new Books().initList()
+window.onload = () => new Books().init()
