@@ -15,7 +15,7 @@ class DatePicker {
         this._monthView = this._createMonthView()
         this.mainElement.appendChild(this._yearHeader.mainElement)
         this.mainElement.appendChild(this._monthHeader.mainElement)
-        this.mainElement.appendChild()
+        this.mainElement.appendChild(this._monthView.mainElement)
     }
 
     _createYearHeader() {
@@ -71,50 +71,104 @@ class MonthView {
         this._dataRows = 6
         this._dataColumns = 7
 
+        this._weekDayCells = Array(7)
+        this._weekNumberCells = Array(6)
+
         this._createMainElement()
+
+        this._fillData()
     }
 
     _createMainElement() {
         this.mainElement = document.createElement('div')
         this._table = document.createElement('table')
+        this._createMonthView();
         this._createRows()
     }
 
+    _createMonthView() {
+        this.mainElement.appendChild(this._table)
+    }
+
     _createRows() {
-        this._craeateHeaderRow()
-        for (let index of this._dataRows) {
-            alert(index)
+        this._createHeaderRow()
+        for (let index = 0; index < this._dataRows; ++index) {
+            this._createDataRow(index)
         }
     }
 
-    _craeateHeaderRow() {
+    _createHeaderRow() {
         let row = document.createElement('tr')
         row.appendChild(document.createElement('th'))
-        for (let index of this._dataColumns) {
-            this._table.appendChild(this._createTableHeaderCell(index))
+        for (let index = 0; index < this._dataColumns; ++index) {
+            row.appendChild(this._createTableHeaderCell(index))
         }
         this._table.appendChild(row)
     }
 
     _createTableHeaderCell(index) {
         let cell = document.createElement('th')
-        cell.textContent = this._weekDayNameForIndex(index)
+        this._weekDayCells[index] = cell
         return cell
     }
 
+    _createDataRow(index) {
+        let row = document.createElement('tr')
+        row.appendChild(this._createWeekNumberCell(index))
+        this._addDataRowCells(row);
+        this._table.appendChild(row)
+    }
+
+    _createWeekNumberCell(index) {
+        let cell = document.createElement('th')
+        this._weekNumberCells[index] = cell
+        return cell
+    }
+
+    _addDataRowCells(row) {
+        for (let index = 0; index < this._dataColumns; ++index) {
+            row.appendChild(this._createDataRowCell(index))
+        }
+    }
+
+    _createDataRowCell(index) {
+        let cell = document.createElement('td')
+        cell.textContent = index
+        return cell
+    }
+
+    _fillData() {
+        this._fillWeekDayNames()
+        this._fillWeekNumbers()
+    }
+
+    _fillWeekDayNames() {
+        for (let [index, cell] of this._weekDayCells.entries()) {
+            cell.textContent = this._weekDayNameForIndex(index)
+        }
+    }
+
+    _fillWeekNumbers() {
+        for (let [index, cell] of this._weekNumberCells.entries()) {
+            // TODO localize using a week day rule
+            cell.textContent = '# ' + (index + 1)
+        }
+    }
+
     _weekDayNameForIndex(index) {
-        // TODO localize, including first day (sat, sun, or mon)
+        // TODO localize, using first day (sat, sun, or mon)
+        // TODO return localization keys instead of user facing string literals
         switch(index) {
-            case 0: return 'Sun'
-            case 1: return 'Mon'
-            case 2: return 'Tue'
-            case 3: return 'Wed'
-            case 4: return 'Thu'
-            case 5: return 'Fri'
-            case 6: return 'Sat'
+            case 0: return "Sun"
+            case 1: return "Mon"
+            case 2: return "Tue"
+            case 3: return "Wed"
+            case 4: return "Thu"
+            case 5: return "Fri"
+            case 6: return "Sat"
             default:
-                console.log('Unable to match index to week day name: ' + index)
-                return '???'
+                console.log("Unable to match index to week day name: " + index)
+                return "???"
         }
     }
 }
