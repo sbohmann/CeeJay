@@ -1,8 +1,13 @@
 
 class DatePicker {
-    constructor() {
-        this._date = LocalDate.now()
+    constructor(date) {
+        if (date === undefined) {
+            this._date = LocalDate.now()
+        } else {
+            this._date = date
+        }
         this._createMainElement()
+        this._fillData()
     }
 
     _createMainElement() {
@@ -21,14 +26,14 @@ class DatePicker {
     }
 
     _createYearHeader() {
-        let header = new HorizontalLabelSwitch(this._date)
-        header.setLabelText(this._date.year)
+        let header = new HorizontalLabelSwitch()
+        header.navigationHandler = forward => this._adjustYear(forward)
         return header
     }
 
     _createMonthHeader() {
-        let header = new HorizontalLabelSwitch(this._date)
-        header.setLabelText(this._date.month)
+        let header = new HorizontalLabelSwitch()
+        header.navigationHandler = forward => this._adjustMonth(forward)
         return header
     }
 
@@ -36,30 +41,47 @@ class DatePicker {
         let view = new MonthView(this._date)
         return view
     }
+
+    _adjustYear(forward) {
+        this._date = this._date.plusYears(forward ? 1 : -1)
+        this._fillData()
+    }
+
+    _adjustMonth(forward) {
+        this._date = this._date.plusMonths(forward ? 1 : -1)
+        this._fillData()
+    }
+
+    _fillData() {
+        this._yearHeader.labelText = this._date.year
+        this._monthHeader.labelText = this._date.month
+        this._monthView.date = this._date
+    }
 }
 
 class HorizontalLabelSwitch {
     constructor(date) {
-        if (date === undefined) {
-            throw "Undefined argument: date"
-        }
-        this._date = date
-
         this.mainElement = this._createMainElement()
     }
 
-    setLabelText(text) {
+    set labelText(text) {
         this._label.textContent = text
+    }
+
+    set navigationHandler(handler) {
+        this._navigationHandler = handler
     }
 
     _createMainElement() {
         let div = document.createElement('div')
         div.style.textAlign = 'center'
         this._previousButton = this._createTextLink('◀')
+        this._previousButton.onclick = () => this._navigationEvent(false)
         this._label = document.createElement('span')
         this._label.style.marginLeft = '1em'
         this._label.style.marginRight = '1em'
         this._nextButton = this._createTextLink('▶')
+        this._nextButton.onclick = () => this._navigationEvent(true)
         div.appendChild(this._previousButton)
         div.appendChild(this._label)
         div.appendChild(this._nextButton)
@@ -70,6 +92,12 @@ class HorizontalLabelSwitch {
         let link = document.createElement('a')
         link.appendChild(document.createTextNode(text))
         return link
+    }
+
+    _navigationEvent(forward) {
+        if (this._navigationHandler) {
+            this._navigationHandler(forward)
+        }
     }
 }
 
@@ -239,6 +267,8 @@ class MonthView {
         let dayCell = this._dayCells[dayIndex]
         if (dayIndex >= this._firstDayIndex && dayIndex <= this._lastDayIndex) {
             dayCell.textContent = dayIndex - this._firstDayIndex + 1
+        } else {
+            dayCell.textContent = ""
         }
     }
 
@@ -280,6 +310,33 @@ class LocalDate {
         return new Date(this._year, this._month, day)
     }
 
+    plusDays(delta) {
+        // TODO
+    }
+
+    plusMonths(delta) {
+        let yearDelta = Math.trunc(delta / 12)
+        let monthDelta = delta
+
+        let newYear = this._year + yearDelta
+        let newMonth = this._month + monthDelta
+
+        return this._dateWithFittedDay(newYear, newMonth, this._day)
+    }
+
+    plusYears(delta) {
+        return this._dateWithFittedDay(this._year + delta, this._month, this._day)
+    }
+
+    _dateWithFittedDay(newYear, newMonth, newDay) {
+        let daysInNewMonth = LocalDate.daysInMonth(newYear, newMonth)
+        if (newDay > daysInNewMonth) {
+            newDay = daysInNewMonth
+        }
+
+        return new LocalDate(newYear, newMonth, newDay)
+    }
+
     get weekday() {
         // TODO replace
         return new Date(this._year, this._month - 1, this.day).getDay() + 1;
@@ -312,11 +369,11 @@ class LocalDate {
         }
     }
 
-    static isLeapYear() {
-        if (this._year % 400 === 0) {
+    static isLeapYear(year) {
+        if (year % 400 === 0) {
             return true
-        } else if (this._year % 4 === 0) {
-            return this._year % 100 !== 0
+        } else if (year % 4 === 0) {
+            return year % 100 !== 0
         } else {
             return false
         }
