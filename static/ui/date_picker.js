@@ -1,5 +1,7 @@
+
 class DatePicker {
     constructor() {
+        this._date = LocalDate.now()
         this._createMainElement()
     }
 
@@ -19,25 +21,30 @@ class DatePicker {
     }
 
     _createYearHeader() {
-        let header = new HorizontalLabelSwitch()
-        header.setLabelText("Year")
+        let header = new HorizontalLabelSwitch(this._date)
+        header.setLabelText(this._date.year)
         return header
     }
 
     _createMonthHeader() {
-        let header = new HorizontalLabelSwitch()
-        header.setLabelText("Month")
+        let header = new HorizontalLabelSwitch(this._date)
+        header.setLabelText(this._date.month)
         return header
     }
 
     _createMonthView() {
-        let view = new MonthView()
+        let view = new MonthView(this._date)
         return view
     }
 }
 
 class HorizontalLabelSwitch {
-    constructor() {
+    constructor(date) {
+        if (date === undefined) {
+            throw "Undefined argument: date"
+        }
+        this._date = date
+
         this.mainElement = this._createMainElement()
     }
 
@@ -67,12 +74,16 @@ class HorizontalLabelSwitch {
 }
 
 class MonthView {
-    constructor() {
+    constructor(date) {
+        if (date === undefined) {
+            throw "Undefined argument: date"
+        }
+        this._date = date
+
         this._dataRows = 6
         this._dataColumns = 7
 
         this._dayShift = 0
-        this._date = LocalDate.now()
 
         this._weekDayCells = Array(7)
         this._weekNumberCells = Array(6)
@@ -84,7 +95,8 @@ class MonthView {
     }
 
     set date(date) {
-        this.date = date
+        this._date = date
+        this._fillData()
     }
 
     _createMainElement() {
@@ -167,9 +179,17 @@ class MonthView {
     }
 
     _fillData() {
+        this._setBoundaryIndices();
         this._fillWeekDayNames()
         this._fillWeekNumbers()
         this._fillDays()
+    }
+
+    _setBoundaryIndices() {
+        let firstWeekDay = new LocalDate(this._date.year, this._date.month, 1).weekday
+        this._firstDayIndex = firstWeekDay - 1
+        let daysInMonth = LocalDate.daysInMonth(this._date.year, this._date.month)
+        this._lastDayIndex = this._firstDayIndex + daysInMonth - 1
     }
 
     _fillWeekDayNames() {
@@ -217,8 +237,8 @@ class MonthView {
     _fillDay(rowIndex, columnIndex) {
         let dayIndex = this.calculateDayIndex(rowIndex, columnIndex)
         let dayCell = this._dayCells[dayIndex]
-        if (dayIndex >= 6 && dayIndex < 37) {
-            dayCell.textContent = dayIndex - 5
+        if (dayIndex >= this._firstDayIndex && dayIndex <= this._lastDayIndex) {
+            dayCell.textContent = dayIndex - this._firstDayIndex + 1
         }
     }
 
@@ -260,6 +280,11 @@ class LocalDate {
         return new Date(this._year, this._month, day)
     }
 
+    get weekday() {
+        // TODO replace
+        return new Date(this._year, this._month - 1, this.day).getDay() + 1;
+    }
+
     static now() {
         let dateTime = new Date()
         let result = new LocalDate(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate())
@@ -267,7 +292,7 @@ class LocalDate {
         return result;
     }
 
-    static maximumDay(month) {
+    static daysInMonth(year, month) {
         switch (month) {
             case 1:
             case 3:
@@ -278,7 +303,12 @@ class LocalDate {
             case 12:
                 return 31
             case 2:
-                return this.isLeapYear() ? 29 : 28
+                return LocalDate.isLeapYear(year) ? 29 : 28
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return 30
         }
     }
 
@@ -293,19 +323,32 @@ class LocalDate {
     }
 
     _check() {
+        this._checkArguments();
+        this._checkYear();
+        this._checkMonth();
+        this._checkDay();
+    }
+
+    _checkArguments() {
         this._checkDefined(this._year, "year")
         this._checkDefined(this._month, "month")
         this._checkDefined(this._day, "day")
+    }
 
+    _checkYear() {
         this._checkIsInteger(this._year, "year")
+    }
 
+    _checkMonth() {
         this._checkIsInteger(this._month, "month")
         this._checkPositive(this._month, "month")
         this._checkMaximum(12, this._month, "month")
+    }
 
+    _checkDay() {
         this._checkIsInteger(this._day, "day")
         this._checkPositive(this._day, "day")
-        this._checkMaximum(LocalDate.maximumDay(this._month), this._day, "day")
+        this._checkMaximum(LocalDate.daysInMonth(this._year, this._month), this._day, "day")
     }
 
     _checkDefined(value, name) {
