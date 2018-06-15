@@ -73,6 +73,7 @@ class MonthView {
 
         this._weekDayCells = Array(7)
         this._weekNumberCells = Array(6)
+        this._dayCells = Array(this._dataRows * this._dataColumns)
 
         this._createMainElement()
 
@@ -81,8 +82,13 @@ class MonthView {
 
     _createMainElement() {
         this.mainElement = document.createElement('div')
+        this._cerateTable()
+    }
+
+    _cerateTable() {
         this._table = document.createElement('table')
-        this._createMonthView();
+        this._table.style.margin = 'auto'
+        this._createMonthView()
         this._createRows()
     }
 
@@ -109,37 +115,54 @@ class MonthView {
     _createTableHeaderCell(index) {
         let cell = document.createElement('th')
         this._weekDayCells[index] = cell
+        this._pad(cell)
+        this._color(cell)
+        return cell
+    }
+
+    _createWeekNumberCell(index) {
+        let cell = document.createElement('th')
+        this._weekNumberCells[index] = cell
+        this._pad(cell)
+        this._color(cell)
         return cell
     }
 
     _createDataRow(index) {
         let row = document.createElement('tr')
         row.appendChild(this._createWeekNumberCell(index))
-        this._addDataRowCells(row);
+        this._addDayCells(row, index)
         this._table.appendChild(row)
     }
 
-    _createWeekNumberCell(index) {
-        let cell = document.createElement('th')
-        this._weekNumberCells[index] = cell
-        return cell
-    }
-
-    _addDataRowCells(row) {
-        for (let index = 0; index < this._dataColumns; ++index) {
-            row.appendChild(this._createDataRowCell(index))
+    _addDayCells(row, rowIndex) {
+        for (let columnIndex = 0; columnIndex < this._dataColumns; ++columnIndex) {
+            let cell = this._createDayCell(this.calculateDayIndex(rowIndex, columnIndex))
+            row.appendChild(cell)
         }
     }
 
-    _createDataRowCell(index) {
+    _createDayCell(index) {
         let cell = document.createElement('td')
-        cell.textContent = index
+        this._dayCells[index] = cell
+        this._pad(cell)
         return cell
+    }
+
+    _pad(cell) {
+        cell.style.padding = '5px'
+        cell.style.textAlign = 'center'
+    }
+
+    _color(cell) {
+        cell.style.color = 'white'
+        cell.style.background = 'blue'
     }
 
     _fillData() {
         this._fillWeekDayNames()
         this._fillWeekNumbers()
+        this._fillDays()
     }
 
     _fillWeekDayNames() {
@@ -170,5 +193,25 @@ class MonthView {
                 console.log("Unable to match index to week day name: " + index)
                 return "???"
         }
+    }
+
+    _fillDays() {
+        for (let rowIndex  = 0; rowIndex < this._dataRows; ++rowIndex) {
+            for (let columnIndex = 0; columnIndex < this._dataColumns; ++columnIndex) {
+                this._fillDay(rowIndex, columnIndex)
+            }
+        }
+    }
+
+    _fillDay(rowIndex, columnIndex) {
+        let dayIndex = this.calculateDayIndex(rowIndex, columnIndex)
+        let dayCell = this._dayCells[dayIndex]
+        if (dayIndex >= 6 && dayIndex < 37) {
+            dayCell.textContent = dayIndex - 5
+        }
+    }
+
+    calculateDayIndex(rowIndex, columnIndex) {
+        return rowIndex * this._dataColumns + columnIndex
     }
 }
