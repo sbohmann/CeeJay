@@ -71,6 +71,9 @@ class MonthView {
         this._dataRows = 6
         this._dataColumns = 7
 
+        this._dayShift = 0
+        this._date = LocalDate.now()
+
         this._weekDayCells = Array(7)
         this._weekNumberCells = Array(6)
         this._dayCells = Array(this._dataRows * this._dataColumns)
@@ -78,6 +81,10 @@ class MonthView {
         this._createMainElement()
 
         this._fillData()
+    }
+
+    set date(date) {
+        this.date = date
     }
 
     _createMainElement() {
@@ -171,17 +178,10 @@ class MonthView {
         }
     }
 
-    _fillWeekNumbers() {
-        for (let [index, cell] of this._weekNumberCells.entries()) {
-            // TODO localize using a week day rule
-            cell.textContent = '# ' + (index + 1)
-        }
-    }
-
     _weekDayNameForIndex(index) {
         // TODO localize, using first day (sat, sun, or mon)
         // TODO return localization keys instead of user facing string literals
-        switch(index) {
+        switch(this._rolledDayIndex(index)) {
             case 0: return "Sun"
             case 1: return "Mon"
             case 2: return "Tue"
@@ -192,6 +192,17 @@ class MonthView {
             default:
                 console.log("Unable to match index to week day name: " + index)
                 return "???"
+        }
+    }
+
+    _rolledDayIndex(index) {
+        return index + this._dayShift
+    }
+
+    _fillWeekNumbers() {
+        for (let [index, cell] of this._weekNumberCells.entries()) {
+            // TODO localize using a week day rule
+            cell.textContent = '# ' + (index + 1)
         }
     }
 
@@ -213,5 +224,111 @@ class MonthView {
 
     calculateDayIndex(rowIndex, columnIndex) {
         return rowIndex * this._dataColumns + columnIndex
+    }
+}
+
+class LocalDate {
+    constructor(year, month, day) {
+        this._year = year
+        this._month = month
+        this._day = day
+
+        this._check()
+    }
+
+    get year() {
+        return this._year;
+    }
+
+    withYear(year) {
+        return new Date(year, this._month, this._day)
+    }
+
+    get month() {
+        return this._month;
+    }
+
+    withMonth(month) {
+        return new Date(this._year, month, this._day)
+    }
+
+    get day() {
+        return this._day;
+    }
+
+    withDay(day) {
+        return new Date(this._year, this._month, day)
+    }
+
+    static now() {
+        let dateTime = new Date()
+        let result = new LocalDate(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate())
+        console.log(JSON.stringify(result))
+        return result;
+    }
+
+    static maximumDay(month) {
+        switch (month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31
+            case 2:
+                return this.isLeapYear() ? 29 : 28
+        }
+    }
+
+    static isLeapYear() {
+        if (this._year % 400 === 0) {
+            return true
+        } else if (this._year % 4 === 0) {
+            return this._year % 100 !== 0
+        } else {
+            return false
+        }
+    }
+
+    _check() {
+        this._checkDefined(this._year, "year")
+        this._checkDefined(this._month, "month")
+        this._checkDefined(this._day, "day")
+
+        this._checkIsInteger(this._year, "year")
+
+        this._checkIsInteger(this._month, "month")
+        this._checkPositive(this._month, "month")
+        this._checkMaximum(12, this._month, "month")
+
+        this._checkIsInteger(this._day, "day")
+        this._checkPositive(this._day, "day")
+        this._checkMaximum(LocalDate.maximumDay(this._month), this._day, "day")
+    }
+
+    _checkDefined(value, name) {
+        if (value === undefined) {
+            throw "Undefined argument '" + name + "'"
+        }
+    }
+
+    _checkIsInteger(value, name) {
+        if (!Number.isInteger(value)) {
+            throw "Argument '" + name + "' is not an integer: " + value
+        }
+    }
+
+    _checkPositive(value, name) {
+        if (value < 1) {
+            throw "Argument '" + name + "' is not an integer: " + value
+        }
+    }
+
+    _checkMaximum(maximum, value, name) {
+        if (value > maximum) {
+            throw "Argument '" + name + "' is > " + maximum + ": " + value
+        }
     }
 }
