@@ -4,8 +4,8 @@ class Books {
     }
 
     initList() {
-        this.bookList = new ListView()
-        this.contentDiv().appendChild(this.bookList.mainElement)
+        this.datePicker = new ListView()
+        this.contentDiv().appendChild(this.datePicker.mainElement)
         this.fetchBookList()
     }
 
@@ -37,7 +37,7 @@ class Books {
     createBookList() {
         for (let book of this.books) {
             let entry = new BookEntry(book)
-            this.bookList.addElement(entry.bookDiv)
+            this.datePicker.addElement(entry.bookDiv)
         }
     }
 }
