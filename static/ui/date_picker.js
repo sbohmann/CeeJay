@@ -156,7 +156,7 @@ class MonthView {
 
     _color(cell) {
         cell.style.color = 'white'
-        cell.style.background = 'blue'
+        cell.style.background = '#369'
     }
 
     _fillData() {
