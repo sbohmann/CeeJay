@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="org.eclipse.jetty:jetty-server:9.4.10.v20180503" type="repository">
+    <properties maven-id="org.eclipse.jetty:jetty-server:9.4.10.v20180503" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.4.10.v20180503/jetty-server-9.4.10.v20180503.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.10.v20180503/jetty-http-9.4.10.v20180503.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.4.10.v20180503/jetty-util-9.4.10.v20180503.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.10.v20180503/jetty-io-9.4.10.v20180503.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.4.10.v20180503/jetty-server-9.4.10.v20180503-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.10.v20180503/jetty-http-9.4.10.v20180503-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.4.10.v20180503/jetty-util-9.4.10.v20180503-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.10.v20180503/jetty-io-9.4.10.v20180503-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.4.10.v20180503/jetty-server-9.4.10.v20180503-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.10.v20180503/jetty-http-9.4.10.v20180503-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.4.10.v20180503/jetty-util-9.4.10.v20180503-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.10.v20180503/jetty-io-9.4.10.v20180503-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
