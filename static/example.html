@@ -22,13 +22,13 @@
         <script src="./vanilla-js-calendar/debug.js"></script>
         <script src="./vanilla-js-calendar/js-calendar.js"></script>
         <script>
-            JSCalendar.on('new', function(cal, xtra) {
+            JSCalendar.on('new', (cal, xtra) => {
                 _jscallog("Class level hook caught for instance with id " + cal.id)
             });
 
-            var today = new Date();
+            const today = new Date();
 
-            var matrix = {};
+            const matrix = {};
             matrix[today.getFullYear()] = {};
             matrix[today.getFullYear()][today.getMonth()] = {
                 "5"  : [{displayname : "You can't miss this event", color : "#792aca"}],
@@ -79,22 +79,22 @@
                 ]
             };
 
-            var calendar = new JSCalendar(document.getElementById('test-instance'), {
-                titleCropSize : 30,
-                eventBackground : "rgb(193, 155, 113)"
+            const calendar = new JSCalendar(document.getElementById('test-instance'), {
+                titleCropSize: 30,
+                eventBackground: "rgb(193, 155, 113)"
             });
             calendar.init();
 
-            var todayEventTime = new Date();
+            let todayEventTime = new Date();
             todayEventTime = new Date(todayEventTime.getFullYear(), todayEventTime.getMonth(), todayEventTime.getDate(), 10, 0, 0);
 
-            var tomorrowEventTime = new Date(todayEventTime.getTime() + (1000 * 60 * 60 * 24));
+            const tomorrowEventTime = new Date(todayEventTime.getTime() + (1000 * 60 * 60 * 24));
 
             calendar.on('willRender', function() {
-                var titleBar = calendar.elem.querySelector('.control-bar-title'); 
+                const titleBar = calendar.elem.querySelector('.control-bar-title');
                 titleBar.style.fontWeight = (
-                    calendar.state.month == today.getMonth() && 
-                    calendar.state.year  == today.getFullYear()
+                    calendar.state.month === today.getMonth() &&
+                    calendar.state.year  === today.getFullYear()
                 ) ? "bold" : "";
 
             }).on('rendered', function(inst) {
