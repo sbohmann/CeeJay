@@ -91,6 +91,7 @@ class HorizontalLabelSwitch {
     _createTextLink(text) {
         let link = document.createElement('a')
         link.appendChild(document.createTextNode(text))
+        link.style.color = '#369'
         return link
     }
 
@@ -310,22 +311,42 @@ class LocalDate {
         return new Date(this._year, this._month, day)
     }
 
-    plusDays(delta) {
-        // TODO
+    plusYears(delta) {
+        return this._dateWithFittedDay(this._year + delta, this._month, this._day)
     }
 
     plusMonths(delta) {
-        let yearDelta = Math.trunc(delta / 12)
-        let monthDelta = delta
+        this._checkIsInteger(delta, delta)
 
-        let newYear = this._year + yearDelta
-        let newMonth = this._month + monthDelta
-
-        return this._dateWithFittedDay(newYear, newMonth, this._day)
+        if (delta === 0) {
+            return this
+        } else if (delta > 0) {
+            return this._plusMonths(delta)
+        } else if (delta < 0) {
+            return this._minusMonths(Math.abs(delta))
+        }
     }
 
-    plusYears(delta) {
-        return this._dateWithFittedDay(this._year + delta, this._month, this._day)
+    _plusMonths(delta) {
+        let rawDeltaMonths = delta + (this._month - 1)
+        let deltaMonths = rawDeltaMonths % 12
+        let deltaYears = Math.trunc(rawDeltaMonths / 12)
+        let newYear = this._year + deltaYears
+        let newMonth = 1 + deltaMonths
+        return new LocalDate(newYear, newMonth, this._day)
+    }
+
+    _minusMonths(delta) {
+        let rawDeltaMonths = delta + (12 - this.month)
+        let deltaMonths = rawDeltaMonths % 12
+        let deltaYears = Math.trunc(rawDeltaMonths / 12)
+        let newYear = this._year - deltaYears
+        let newMonth = 12 - deltaMonths
+        return new LocalDate(newYear, newMonth, this._day)
+    }
+
+    plusDays(delta) {
+        // TODO convert to epoch days, modify, convert back ^^
     }
 
     _dateWithFittedDay(newYear, newMonth, newDay) {
