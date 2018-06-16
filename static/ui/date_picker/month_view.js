@@ -12,7 +12,7 @@ class MonthView {
         this._weekNumberCells = Array(this._dataRows)
         this._dayCells = Array(this._dataRows * this._dataColumns)
 
-        this._createMainElement()
+        this._createView()
 
         this._fillData()
     }
@@ -22,14 +22,19 @@ class MonthView {
         this._fillData()
     }
 
-    _createMainElement() {
-        this.mainElement = document.createElement('div')
-        this._cerateTable()
+    _createView() {
+        this._createMainElement()
+        this._createTable()
     }
 
-    _cerateTable() {
+    _createMainElement() {
+        this.mainElement = document.createElement('div')
+    }
+
+    _createTable() {
         this._table = document.createElement('table')
         this._table.style.margin = 'auto'
+        this._table.style.width = '100%'
         this._createMonthView()
         this._createRows()
     }

@@ -6,14 +6,20 @@ class DatePicker {
         } else {
             this._date = date
         }
-        this._createMainElement()
+        this._createView()
         this._fillData()
+    }
+
+    _createView() {
+        this._createMainElement()
+        this._createYearHeader()
+        this._createHeaders()
     }
 
     _createMainElement() {
         this.mainElement = document.createElement('div')
-        this._createYearHeader()
-        this._createHeaders()
+        this.mainElement.style.width = '400px'
+        this.mainElement.style.margin = 'auto'
     }
 
     _createHeaders() {
@@ -26,15 +32,22 @@ class DatePicker {
     }
 
     _createYearHeader() {
-        let header = new HorizontalLabelSwitch()
+        let header = this._createSwitch();
         header.navigationHandler = forward => this._adjustYear(forward)
         return header
     }
 
     _createMonthHeader() {
-        let header = new HorizontalLabelSwitch()
+        let header = this._createSwitch()
         header.navigationHandler = forward => this._adjustMonth(forward)
         return header
+    }
+
+    _createSwitch() {
+        let header = new HorizontalLabelSwitch()
+        header.mainElement.style.width = '160px'
+        header.mainElement.style.margin = 'auto'
+        return header;
     }
 
     _createMonthView() {

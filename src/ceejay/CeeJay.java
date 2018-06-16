@@ -22,8 +22,14 @@ class CeeJay {
     private void createServer() throws Exception {
         Server server = new Server(8080);
         server.setHandler(createServletHandler());
+        configureServer(server);
         server.start();
         server.join();
+    }
+
+    private void configureServer(Server server) {
+        server.setAttribute("reload", "automatic");
+        server.setAttribute("scanIntervalSeconds", 5);
     }
 
     private Handler createServletHandler() throws IOException {

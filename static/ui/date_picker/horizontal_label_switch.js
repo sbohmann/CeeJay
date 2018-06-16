@@ -18,10 +18,15 @@ class HorizontalLabelSwitch {
     _createMainElement() {
         this.mainElement = document.createElement('div')
         this.mainElement.style.textAlign = 'center'
+        this.mainElement.style.position = 'relative'
+        this.mainElement.style.fontSize = 'larger'
+        this.mainElement.style.fontWeight = 'bold'
     }
 
     _createPreviousButton() {
-        this._previousButton = this._createTextLink('◀')
+        this._previousButton = this._createTextButton('<')
+        this._previousButton.style.position = 'absolute'
+        this._previousButton.style.left = '0'
         this._previousButton.onclick = () => this._navigationEvent(false)
         this.mainElement.appendChild(this._previousButton)
     }
@@ -30,20 +35,28 @@ class HorizontalLabelSwitch {
         this._label = document.createElement('span')
         this._label.style.marginLeft = '1em'
         this._label.style.marginRight = '1em'
+        this.mainElement.appendChild(this._label)
     }
 
     _createNextButton() {
-        this.mainElement.appendChild(this._label)
-        this._nextButton = this._createTextLink('▶')
+        this._nextButton = this._createTextButton('>')
+        this._nextButton.style.position = 'absolute'
+        this._nextButton.style.right = '0'
         this._nextButton.onclick = () => this._navigationEvent(true)
         this.mainElement.appendChild(this._nextButton)
     }
 
-    _createTextLink(text) {
-        let link = document.createElement('a')
-        link.appendChild(document.createTextNode(text))
-        link.style.color = '#369'
-        return link
+    _createTextButton(text) {
+        let button = document.createElement('button')
+        button.appendChild(document.createTextNode(text))
+        button.style.color = '#369'
+        button.style.border = 'none'
+        button.style.background = 'none'
+        button.style.cursor = 'pointer'
+        button.style.font = 'inherit'
+        button.style.padding = 'inherit'
+        button.style.margin = 'inherit'
+        return button
     }
 
     _navigationEvent(forward) {

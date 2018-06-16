@@ -87,7 +87,6 @@ class LocalDate {
     static now() {
         let dateTime = new Date()
         let result = new LocalDate(dateTime.getFullYear(), dateTime.getMonth() + 1, dateTime.getDate())
-        console.log(JSON.stringify(result))
         return result;
     }
 
