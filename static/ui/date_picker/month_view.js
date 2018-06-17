@@ -125,6 +125,7 @@ class MonthView {
 
     _fillWeekDayNames() {
         for (let [index, cell] of this._weekDayCells.entries()) {
+            // TODO localize
             cell.textContent = this._monthModel.weekDay(index)
         }
     }
@@ -136,7 +137,6 @@ class MonthView {
     }
     _fillWeekNumbers() {
         for (let [index, cell] of this._weekNumberCells.entries()) {
-            // TODO localize using a week day rule
             cell.textContent = this._monthModel.weekNumber(index)
         }
     }
