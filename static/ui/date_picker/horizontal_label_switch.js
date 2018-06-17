@@ -19,8 +19,6 @@ class HorizontalLabelSwitch {
         this.mainElement = document.createElement('div')
         this.mainElement.style.textAlign = 'center'
         this.mainElement.style.position = 'relative'
-        this.mainElement.style.fontSize = 'larger'
-        this.mainElement.style.fontWeight = 'bold'
     }
 
     _createPreviousButton() {

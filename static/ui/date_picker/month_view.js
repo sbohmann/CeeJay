@@ -35,6 +35,7 @@ class MonthView {
         this._table = document.createElement('table')
         this._table.style.margin = 'auto'
         this._table.style.width = '100%'
+        this._table.style.tableLayout = 'fixed'
         this._createMonthView()
         this._createRows()
     }
@@ -121,7 +122,7 @@ class MonthView {
     _fillWeekNumbers() {
         for (let [index, cell] of this._weekNumberCells.entries()) {
             // TODO localize using a week day rule
-            cell.textContent = '# ' + this._monthModel.weekNumber(index)
+            cell.textContent = this._monthModel.weekNumber(index)
         }
     }
 

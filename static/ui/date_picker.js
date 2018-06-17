@@ -18,7 +18,7 @@ class DatePicker {
 
     _createMainElement() {
         this.mainElement = document.createElement('div')
-        this.mainElement.style.width = '400px'
+        this.mainElement.style.width = '360px'
         this.mainElement.style.margin = 'auto'
     }
 
@@ -45,8 +45,10 @@ class DatePicker {
 
     _createSwitch() {
         let header = new HorizontalLabelSwitch()
-        header.mainElement.style.width = '160px'
+        header.mainElement.style.width = '50%'
         header.mainElement.style.margin = 'auto'
+        header.mainElement.style.fontSize = 'larger'
+        header.mainElement.style.fontWeight = 'bold'
         return header;
     }
 
