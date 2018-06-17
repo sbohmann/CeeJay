@@ -155,7 +155,7 @@ class MonthView {
         if (day !== null) {
             dayCell.textContent = day
         } else {
-            dayCell.textContent = ""
+            dayCell.textContent = "\u00a0"
         }
     }
 
