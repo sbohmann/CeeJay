@@ -6,6 +6,7 @@ class MonthView {
         }
         this._monthModel = new MonthModel(date)
 
+        this._showWeekNumbers = false
         this._dataRows = 6
         this._dataColumns = 7
         this._weekDayCells = Array(this._dataColumns)
@@ -53,7 +54,9 @@ class MonthView {
 
     _createHeaderRow() {
         let row = document.createElement('tr')
-        row.appendChild(document.createElement('th'))
+        if (this._showWeekNumbers) {
+            row.appendChild(document.createElement('th'))
+        }
         for (let index = 0; index < this._dataColumns; ++index) {
             row.appendChild(this._createTableHeaderCell(index))
         }
@@ -63,6 +66,7 @@ class MonthView {
     _createTableHeaderCell(index) {
         let cell = document.createElement('th')
         this._weekDayCells[index] = cell
+        this._layout(cell)
         this._pad(cell)
         this._color(cell)
         return cell
@@ -71,6 +75,7 @@ class MonthView {
     _createWeekNumberCell(index) {
         let cell = document.createElement('th')
         this._weekNumberCells[index] = cell
+        this._layout(cell)
         this._pad(cell)
         this._color(cell)
         return cell
@@ -78,7 +83,9 @@ class MonthView {
 
     _createDataRow(index) {
         let row = document.createElement('tr')
-        row.appendChild(this._createWeekNumberCell(index))
+        if (this._showWeekNumbers) {
+            row.appendChild(this._createWeekNumberCell(index))
+        }
         this._addDayCells(row, index)
         this._table.appendChild(row)
     }
@@ -93,23 +100,26 @@ class MonthView {
     _createDayCell(index) {
         let cell = document.createElement('td')
         this._dayCells[index] = cell
+        this._layout(cell)
         this._pad(cell)
         return cell
     }
 
+    _layout(cell) {
+        cell.style.textAlign = 'right'
+    }
+
     _pad(cell) {
         cell.style.padding = '5px'
-        cell.style.textAlign = 'center'
     }
 
     _color(cell) {
-        cell.style.color = 'white'
-        cell.style.background = '#369'
+        cell.style.color = '#369'
     }
 
     _fillData() {
         this._fillWeekDayNames()
-        this._fillWeekNumbers()
+        this._fillWeekNumbersIfShown()
         this._fillDays()
     }
 
@@ -119,6 +129,11 @@ class MonthView {
         }
     }
 
+    _fillWeekNumbersIfShown() {
+        if (this._showWeekNumbers) {
+            this._fillWeekNumbers()
+        }
+    }
     _fillWeekNumbers() {
         for (let [index, cell] of this._weekNumberCells.entries()) {
             // TODO localize using a week day rule
